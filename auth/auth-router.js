@@ -56,15 +56,6 @@ router.post('/register', async (req, res) => {
         else if(err === 6){
             res.status(400).json({message: `Name is required`});
         }
-        else if(err === 7){
-            res.status(400).json({message: `Zip code is required`});
-        }
-        else if(err === 8){
-            res.status(400).json({message: `Zip code must be five digits.`});
-        }
-        else if(err === 9){
-            res.status(400).json({message: `Zip code must be a number.`});
-        }
         else{
             console.log(err);
             res.status(500).json({message: 'Server could not add user.', error: err});
