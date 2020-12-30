@@ -6,9 +6,9 @@ const {generateToken} = require('./token.js');
 const {validateZipCode} = require('../utils.js');
 const routerName = '/auth'
 
-router.post('/register', async (req, res) => {
+router.post('/register', async (req, res, next) => {
     const endpoint = `${routerName} post /register`;
-    const user = { email, username, password, name, zipCode } = req.body;
+    const user = { email, username, password, fullName, zipCode } = req.body;
     console.log('registering ', username);
     for(let val in user){
         if(typeof user[val] === 'string'){
@@ -17,57 +17,28 @@ router.post('/register', async (req, res) => {
     };
    
     try{
-        if(!(username && password && email)){ throw 1 }
-        else if(!(/^[a-z][a-z0-9_]*$/i.test(username))){ throw 2 }
+        if(!(username && password && email && fullName)){ throw `${endpoint} 400`; }
+        else if(!(/^[a-z][a-z0-9_]*$/i.test(username))){ throw `${endpoint} 400-2`; }
         validateZipCode(zipCode, endpoint, req);
         
-        const foundUsername = await db('users')
-        .where({username: user.username})
-        .first();
+        const foundUsername = await db('users').where({username: user.username}).first();
+        if(foundUsername){ req.username = username; throw `${endpoint} 409`; }
 
-        if(foundUsername){ throw 3 }
-
-        const foundEmail = await db('users')
-        .where({email: user.email})
-        .first();
-
-        if(foundEmail){ throw 4 }
-        if(!name){ throw 6 }
-
+        const foundEmail = await db('users').where({email: user.email}).first();
+        if(foundEmail){ req.email = email; throw `${endpoint} 409-2`; }
         
         const [id] = await userDb.add({...user, password: bcrypt.hashSync(password, 12)});
-
         const response = await db('users').select('id', 'username').where({id}).first();
 
-        res.status(201).json({id :response.id, username: response.username});
-    }catch(err){
-        if(err === 1){
-            res.status(400).json({message: `Email, username and password are required.`});
-        }
-        else if(err === 2){
-            res.status(400).json({message: 'Username must only contain characters A-Z, _, and 0-9. Username must start with a letter.'});
-        }
-        else if(err === 3){
-            res.status(409).json({message: `Username '${user.username}' is already in use.`});
-        }
-        else if(err === 4){
-            res.status(409).json({message: `There is already an account associated with that email`});
-        }
-        else if(err === 6){
-            res.status(400).json({message: `Name is required`});
-        }
-        else{
-            console.log(err);
-            res.status(500).json({message: 'Server could not add user.', error: err});
-        }
-    }
+        res.status(201).json({message: `Successfully added user #${response.id}`, id :response.id, username: response.username});
+    } catch(err){ next(err); }
 });
 
 router.post('/login', async (req, res) => {
     const {username, password} = req.body;
     if(username && password){
         const user = await db('users as u').where({'u.username': username.toLowerCase()}).first();
-        
+
         if(user && bcrypt.compareSync(password, user.password)){
             const token = await generateToken(user);
             res.status(200).json({message: `Welcome ${user.name}`, token, user: {...user, password: undefined}});
