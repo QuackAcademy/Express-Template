@@ -19,7 +19,8 @@ router.post('/register', async (req, res) => {
     try{
         if(!(username && password && email)){ throw 1 }
         else if(!(/^[a-z][a-z0-9_]*$/i.test(username))){ throw 2 }
-
+        validateZipCode(zipCode, endpoint, req);
+        
         const foundUsername = await db('users')
         .where({username: user.username})
         .first();
@@ -33,7 +34,6 @@ router.post('/register', async (req, res) => {
         if(foundEmail){ throw 4 }
         if(!name){ throw 6 }
 
-        validateZipCode(zipCode, endpoint, req);
         
         const [id] = await userDb.add({...user, password: bcrypt.hashSync(password, 12)});
 
@@ -66,10 +66,8 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
     const {username, password} = req.body;
     if(username && password){
-        const user = await db('users as u').where({'u.username': username.toLowerCase()})
-            .leftJoin('farms as f', 'u.id', 'f.id')
-            .select('u.*', 'f.name as farmName')
-            .first();
+        const user = await db('users as u').where({'u.username': username.toLowerCase()}).first();
+        
         if(user && bcrypt.compareSync(password, user.password)){
             const token = await generateToken(user);
             res.status(200).json({message: `Welcome ${user.name}`, token, user: {...user, password: undefined}});
