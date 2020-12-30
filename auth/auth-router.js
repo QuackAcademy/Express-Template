@@ -3,8 +3,11 @@ const bcrypt = require('bcryptjs');
 const db = require('../data/db-config.js');
 const userDb = require('../data/users-model.js');
 const {generateToken} = require('./token.js');
+const {validateZipCode} = require('../utils.js');
+const routerName = '/auth'
 
 router.post('/register', async (req, res) => {
+    const endpoint = `${routerName} post /register`;
     const user = { email, username, password, name, zipCode } = req.body;
     console.log('registering ', username);
     for(let val in user){
@@ -29,9 +32,8 @@ router.post('/register', async (req, res) => {
 
         if(foundEmail){ throw 4 }
         if(!name){ throw 6 }
-        if(!zipCode){ throw 7 }
-        if(zipCode.length !== 5){ throw 8 }
-        if (isNaN(zipCode)){ throw 9 }
+
+        validateZipCode(zipCode, endpoint, req);
         
         const [id] = await userDb.add({...user, password: bcrypt.hashSync(password, 12)});
 
