@@ -46,8 +46,8 @@ router.get('/:id', async (req, res) => {
 
 // put by token
 router.put('/user', async (req, res) => {
-    const { isFarmer, farmID, email, username, name, zipCode, addressStreet, addressCity, addressState } = req.body;
-    const newValues = {isFarmer, farmID, email, username, name, zipCode, addressStreet, addressCity, addressState };
+    const { email, username, name, zipCode, addressStreet, addressCity, addressState } = req.body;
+    const newValues = { email, username, name, zipCode, addressStreet, addressCity, addressState };
     let { password, newPassword } = req.body;
     console.log('updating user- newValues: ', newValues);
     for(let val in newValues){
