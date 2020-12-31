@@ -3,12 +3,11 @@ const bcrypt = require('bcryptjs');
 const db = require('../data/db-config.js');
 const userDb = require('../data/users-model.js');
 const {generateToken} = require('./token.js');
-const {validateZipCode} = require('../utils.js');
 const routerName = '/auth'
 
 router.post('/register', async (req, res, next) => {
     const endpoint = `${routerName} post /register`;
-    const user = { email, username, password, fullName, zipCode } = req.body;
+    const user = { email, username, password, fullName } = req.body;
     console.log('registering ', username);
     for(let val in user){
         if(typeof user[val] === 'string'){
@@ -19,7 +18,6 @@ router.post('/register', async (req, res, next) => {
     try{
         if(!(username && password && email && fullName)){ throw `${endpoint} 400`; }
         else if(!(/^[a-z][a-z0-9_]*$/i.test(username))){ throw `${endpoint} 400-2`; }
-        validateZipCode(zipCode, endpoint, req);
         
         const foundUsername = await db('users').where({username: user.username}).first();
         if(foundUsername){ req.username = username; throw `${endpoint} 409`; }
