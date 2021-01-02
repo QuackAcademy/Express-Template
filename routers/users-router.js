@@ -151,21 +151,16 @@ router.delete('/user', async (req, res, next) => {
 
 
 // get all users: for debugging, remove when finished
-router.get('/user/all', async (req, res) => {
+router.get('/user/all', async (req, res, next) => {
+    const endpoint = `${routerName} get /user/all`;
+    req.endpoint = endpoint;
+    
     try{
-        const user = await db('users as u')
-            .select('u.*')
-        if(user){
-            res.status(200).json(user)
-        }else{
-            console.log('get user 404 error', user);
-            res.status(404).json({message: `User with id ${req.user.id} not found.`});
-        }
-        
-    }catch(err){
-        console.log(err);
-        res.status(500).json({message: 'Error getting user information.'});
-    }
+        const users = await db('users');
+
+        if(users.length){ res.status(200).json(users); }
+        else{ res.status(200).json({message: `No users found`}); }
+    } catch(err){ next(err); }
 });
 
 module.exports = router;
