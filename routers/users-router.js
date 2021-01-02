@@ -132,6 +132,7 @@ router.put('/user', async (req, res) => {
 // delete by token
 router.delete('/user', async (req, res, next) => {
     const endpoint = `${routerName} delete /user`;
+    req.endpoint = endpoint;
     const {password} = req.body;
 
     try{
@@ -154,7 +155,7 @@ router.delete('/user', async (req, res, next) => {
 router.get('/user/all', async (req, res, next) => {
     const endpoint = `${routerName} get /user/all`;
     req.endpoint = endpoint;
-    
+
     try{
         const users = await db('users');
 

@@ -7,8 +7,9 @@ const routerName = '/auth'
 
 router.post('/register', async (req, res, next) => {
     const endpoint = `${routerName} post /register`;
+    req.endpoint = endpoint;
     const user = { email, username, password, fullName } = req.body;
-    console.log('registering ', username);
+
     for(let val in user){
         if(typeof user[val] === 'string'){
             user[val] = user[val].toLowerCase();
