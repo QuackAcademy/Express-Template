@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const userDb = require('../data/users-model');
+const routerName = '/users';
 
 const db = require('../data/db-config');
 
@@ -129,34 +130,23 @@ router.put('/user', async (req, res) => {
 });
 
 // delete by token
-router.delete('/user', async (req, res) => {
+router.delete('/user', async (req, res, next) => {
+    const endpoint = `${routerName} delete /user`;
     const {password} = req.body;
-    // console.log('password', password);
-    // console.log(req.body);
-    // console.log(req.body.password);
-    try{
-        if(password){
-            const user = await db('users')
-            .where({id: req.user.id})
-            .first();
 
-            if(user && bcrypt.compareSync(password, user.password)){
-                await userDb.remove(req.user.id);
-                res.status(200).json({message: 'User successfully deleted'});
-            }else{
-                throw 1
-            }
-        }else{
-            throw 2
+    try{
+        if (!password){ throw `${endpoint} 400`; }
+
+        const user = await db('users')
+        .where({id: req.user.id})
+        .first();
+
+        if(user && bcrypt.compareSync(password, user.password)){
+            await userDb.remove(req.user.id);
+            res.status(200).json({message: 'User successfully deleted'});
         }
-    }catch(err){
-        if(err === 1){
-            res.status(403).json({message: 'Invalid credentials.'});
-        }else if(err === 2){
-            res.status(400).json({message: 'Please provide password.'});
-        }
-        res.status(500).json({message: 'Error deleting user.'});
-    }
+        else{ throw `${endpoint} 403`; }
+    } catch(err){ next(err); }
 });
 
 
