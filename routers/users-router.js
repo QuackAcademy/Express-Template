@@ -25,24 +25,29 @@ router.get('/user', async (req, res) => {
     }
 });
 
-// get by id
-router.get('/:id', async (req, res) => {
+// get all users: for debugging, remove when finished
+router.get('/user/all', async (req, res, next) => {
+    const endpoint = `${routerName} get /user/all`;
+    req.endpoint = endpoint;
+
     try{
+        const users = await db('users');
+
+        if(users.length){ res.status(200).json(users); }
+        else{ res.status(200).json({message: `No users found`}); }
+    } catch(err){ next(err); }
+});
+
+// get by id
+router.get('/:id', async (req, res, next) => {
+    const endpoint = `${routerName} get /:id`;
+    req.endpoint = endpoint;
+    try{
+        if(isNaN(req.params.id)){ throw `${endpoint} 400`; }
         const user = await userDb.findById(req.params.id);
-        if(user){
-            res.status(200).json({...user, password: null});
-        }else{
-            throw 404;
-        }
-    }catch(err){
-        console.log(err);
-        switch(err){
-            case 404: res.status(404).json({message: 'User with specified ID not found'});
-                break;
-            default: res.status(500).json({message: 'Error getting user information'});
-                break;
-        }
-    }
+        if(user){ res.status(200).json({...user, password: null}); }
+        else{ throw `${endpoint} 400`; }
+    } catch(err){ next(err)}
 });
 
 // put by token
@@ -103,20 +108,6 @@ router.delete('/user', async (req, res, next) => {
             res.status(200).json({message: 'User successfully deleted'});
         }
         else{ throw `${endpoint} 403`; }
-    } catch(err){ next(err); }
-});
-
-
-// get all users: for debugging, remove when finished
-router.get('/user/all', async (req, res, next) => {
-    const endpoint = `${routerName} get /user/all`;
-    req.endpoint = endpoint;
-
-    try{
-        const users = await db('users');
-
-        if(users.length){ res.status(200).json(users); }
-        else{ res.status(200).json({message: `No users found`}); }
     } catch(err){ next(err); }
 });
 
