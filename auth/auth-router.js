@@ -33,20 +33,21 @@ router.post('/register', async (req, res, next) => {
     } catch(err){ next(err); }
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', async (req, res, next) => {
+    const endpoint = `${routerName} post /login`;
+    req.endpoint = endpoint;
     const {username, password} = req.body;
-    if(username && password){
-        const user = await db('users as u').where({'u.username': username.toLowerCase()}).first();
 
+    try{
+        if(!username || !password){ throw `${endpoint} 400`; }
+        const user = await db('users as u').where({'u.username': username.toLowerCase()}).first();
+    
         if(user && bcrypt.compareSync(password, user.password)){
             const token = await generateToken(user);
-            res.status(200).json({message: `Welcome ${user.name}`, token, user: {...user, password: undefined}});
-        }else{
-            res.status(403).json({message: 'Invalid username or password'});
+            res.status(200).json({message: `Welcome ${user.fullName}`, token, user: {...user, password: undefined}});
         }
-    }else{
-        res.status(400).json({message: 'Please provide a username and password'});
-    }
+        else{ throw `${endpoint} 403`; }
+    } catch(err){ next(err); }
 });
 
 module.exports = router;
