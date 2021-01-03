@@ -22,7 +22,12 @@ exports.handleError = async (err, req, res) => {
         case `/users get /:id 400`: status = 400; responseObj = { message: `Param id must be a number. Received: ${req.params.id}` }; break;
         case `/users get /:id 404`: status = 404; responseObj = { message: `User with id ${req.user.id} not found` }; break;
         case `/users get /user 404`: status = 404; responseObj = { message: `User with id ${req.user.id} not found` }; break;
-        case `/users put /user 404`: status = 404; responseObj = { message: `User with id ${req.user.id} not found` }; break;
+        case `/users put /user 400`: status = 400; responseObj = { message: `Current password is required` }; break;
+        case `/users put /user 400-2`: status = 400; responseObj = { message: `Username must only contain characters A-Z, _, and 0-9. Username must start with a letter` }; break;
+        case `/users put /user 403`: status = 403; responseObj = { message: `Invalid credentials` }; break;
+        case `/users put /user 404`: status = 404; responseObj = { message: `User not found` }; break;
+        case `/users put /user 409`: status = 409; responseObj = { message: `Username '${req.username}' is already in use` }; break;
+        case `/users put /user 409-2`: status = 409; responseObj = { message: `Email '${req.email}' is already in use` }; break;
         case `/users delete /user 400`: status = 400; responseObj = { message: 'Password is required to delete user' }; break;
         case `/users delete /user 403`: status = 403; responseObj = { message: 'Invalid credentials' }; break;
         //#endregion
