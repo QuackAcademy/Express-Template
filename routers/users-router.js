@@ -6,30 +6,20 @@ const routerName = '/users';
 const db = require('../data/db-config');
 
 // get by token
-router.get('/user', async (req, res) => {
+router.get('/user', async (req, res, next) => {
+    const endpoint = `${routerName} get /user`;
+    req.endpoint = endpoint;
     try{
-        const user = await db('users as u')
-            .where({'u.id': req.user.id})
-            .select('u.*')
-            .first();
-        if(user){
-            res.status(200).json({...user, password: null})
-        }else{
-            console.log('Get user by token 404 error', user);
-            res.status(404).json({message: `User with id ${req.user.id} not found.`});
-        }
-        
-    }catch(err){
-        console.log('Get user by token 500 error: ', err);
-        res.status(500).json({message: 'Error getting user information.'});
-    }
+        const user = await db('users as u').where({'u.id': req.user.id}).select('u.*').first();
+        if(user){ res.status(200).json({...user, password: null}); }
+        else{ throw `${endpoint} 404`; }
+    } catch(err){ next(err); }
 });
 
 // get all users: for debugging, remove when finished
 router.get('/user/all', async (req, res, next) => {
     const endpoint = `${routerName} get /user/all`;
     req.endpoint = endpoint;
-
     try{
         const users = await db('users');
 
