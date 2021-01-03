@@ -109,3 +109,4 @@ dist
 
 .env
 *.sqlite3
+*.db3
