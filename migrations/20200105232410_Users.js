@@ -10,7 +10,7 @@ exports.up = function(knex) {
             .unique(); 
         tbl.string('password', 255)
             .notNullable();
-        tbl.string('name', 255)
+        tbl.string('fullName', 255)
             .notNullable();
     })
 };

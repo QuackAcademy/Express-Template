@@ -15,6 +15,8 @@ exports.handleError = async (err, req, res) => {
         case `/auth post /register 400-2`: status = 400; responseObj = { message: 'Username must only contain characters A-Z, _, and 0-9. Username must start with a letter.' }; break;
         case `/auth post /register 409`: status = 409; responseObj = { message: `Username '${req.username}' is already in use.` }; break;
         case `/auth post /register 409-2`: status = 409; responseObj = { message: `There is already an account associated with the email: ${req.email}` }; break;
+        case `/auth post /login 400`: status = 400; responseObj = { message: 'Username and Password are required' }; break;
+        case `/auth post /login 403`: status = 403; responseObj = { message: 'Invalid username or password' }; break;
         //#endregion
         //#region users router
         case `/users get /:id 400`: status = 400; responseObj = { message: `Param id must be a number. Received: ${req.params.id}` }; break;
