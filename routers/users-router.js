@@ -47,8 +47,8 @@ router.get('/:id', async (req, res) => {
 
 // put by token
 router.put('/user', async (req, res) => {
-    const { email, username, name, } = req.body;
-    const newValues = { email, username, name, };
+    const { email, username, fullName, } = req.body;
+    const newValues = { email, username, fullName, };
     let { password, newPassword } = req.body;
     console.log('updating user- newValues: ', newValues);
     for(let val in newValues){
@@ -95,7 +95,7 @@ router.put('/user', async (req, res) => {
             if(updated){
                 const updatedUser = await userDb
                 .findBy({id: req.user.id})
-                .select('id', 'username', 'email', 'name',);
+                .select('id', 'username', 'email', 'fullName',);
                 
                 res.status(200).json({...updatedUser});
             }else{
