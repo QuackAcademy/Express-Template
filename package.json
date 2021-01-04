@@ -23,21 +23,22 @@
   },
   "homepage": "https://github.com/QuackAcademy/Express-Template#readme",
   "dependencies": {
+    "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "helmet": "^3.23.3",
     "jsonwebtoken": "^8.5.1",
-    "knex": "^0.20.15",
+    "knex": "^0.21.15",
     "knex-cleaner": "^1.3.0",
-    "pg": "^7.18.2",
-    "sqlite3": "^4.2.0"
+    "pg": "^8.5.1"
   },
   "devDependencies": {
     "cross-env": "^6.0.3",
     "dotenv": "^8.2.0",
     "jest": "^26.4.0",
     "nodemon": "^2.0.4",
+    "sqlite3": "^5.0.0",
     "supertest": "^4.0.2"
   }
 }
