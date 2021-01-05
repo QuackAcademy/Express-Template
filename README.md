@@ -35,3 +35,24 @@ Environment variables are secret and should never be pushed to github.
 Ensure that *.env is listed in your .gitignore file to prevent this.
 
 //list of env vars needing updates
+
+### Creating and seeding the database
+To create a local sqlite3 database, install knex:
+```js
+npm install -g knex
+```
+And then run:
+```js
+knex migrate:latest
+```
+You can also use npx to run the command without installing knex:
+```js
+npx knex migrate:latest
+```
+Now fill the database with seed data:
+```js
+knex seed:run
+```
+
+### Testing functionality
+Let's call some endpoints with Insomnia (Or Postman) to make sure everything is working correctly.
