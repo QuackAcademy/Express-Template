@@ -22,6 +22,7 @@ We'll be using nodemon to run the server locally- it restarts automatically on c
 ```js
 npm run server
 ```
+The included file zRunServer.sh will open a new terminal and run this command on double click.
 
 ### Environment Variables
 These variables need to be defined in order for the program to function successfully.
