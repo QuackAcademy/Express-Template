@@ -14,6 +14,14 @@ You can use this to quickly launch an Express backend or to follow along with th
 
 ## Local deployment/repo specific instructions
 
+Clone/fork/download the app, then install the dependencies by running:
+```js
+npm i
+```
+We'll be using nodemon to run the server locally- it restarts automatically on changes to files.
+```js
+npm run server
+```
 
 ### Environment Variables
 These variables need to be defined in order for the program to function successfully.
