@@ -40,8 +40,9 @@ These environment variables need updating for the project to function:
 * process.env.topSecretCode- this is used as a way to have 'developer only' endpoints, like requiring it when calling error-router endpoints.
 
 These are optional:
-* process.env.discordUrl- add this if you want the webhooks included in utils.js and used in the error middleware to function.
-* process.env.slackUrl- add this if you want the webhooks included in utils.js and used in the error middleware to function.
+* Webhooks: Add these if you want the webhooks included in utils.js and used in the error middleware to function. Learn more about WebHooks [here.](https://quackacademy.com/guides/general/webhooks)
+    * process.env.discordUrl
+    * process.env.slackUrl
 
 ### Creating and seeding the database
 To create a local sqlite3 database, install knex:
