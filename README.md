@@ -35,7 +35,12 @@ Environment variables are secret and should never be pushed to github.
 
 Ensure that *.env is listed in your .gitignore file to prevent this.
 
-//list of env vars needing updates
+These environment variables need updating for the project to function:
+* process.env.JWT_SECRET- this is the secret that your tokens get encoded/decoded with.
+* process.env.topSecretCode- this is used as a way to have 'developer only' endpoints, like requiring it when calling error-router endpoints.
+These are optional:
+* process.env.discordUrl- add this if you want the webhooks included in utils.js and used in the error middleware to function.
+* process.env.slackUrl- add this if you want the webhooks included in utils.js and used in the error middleware to function.
 
 ### Creating and seeding the database
 To create a local sqlite3 database, install knex:
