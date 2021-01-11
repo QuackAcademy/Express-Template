@@ -68,6 +68,8 @@ knex seed:run
 ### Testing functionality
 Let's call some endpoints with Insomnia (Or Postman) to make sure everything is working correctly.
 
+If you're unfamiliar with these tools, check out our article [here.](https://www.quackacademy.com/guides/backend/insomnia)
+
 The server should be running on port 8018. 
 
 Log in using http://localhost:8018/api/auth/login, credentials "username": "testuser1", "password":, "pass"
