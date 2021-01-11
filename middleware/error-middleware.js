@@ -46,9 +46,7 @@ exports.handleError = async (err, req, res) => {
     else{ errObj.errorID = err; errObj.errorMessage = responseObj.message; }
     
     let user = '';
-    if (req.user){
-        if (req.user.id){ user = await dbMethods.findById('users', req.user.id); }
-    }
+    if (req.user && req.user.id){ user = await dbMethods.findById('users', req.user.id); }
 
     const errorLogged = await dbMethods.add('errors', errObj);
 
