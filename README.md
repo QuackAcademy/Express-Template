@@ -29,7 +29,9 @@ These variables need to be defined in order for the program to function successf
 
 If working locally, create a file called .env in the root folder. 
 
-You'll store variables like so: //image?
+You'll store variables like so: 
+
+//.env image
 
 Environment variables are secret and should never be pushed to github. 
 
@@ -69,13 +71,19 @@ Let's call some endpoints with Insomnia (Or Postman) to make sure everything is 
 The server should be running on port 8018. 
 
 Log in using http://localhost:8018/api/auth/login, credentials "username": "testuser1", "password":, "pass"
-//image
+
 This will return a JWT we will use to authenticate the next call.
 
+//insomnia login image
+
 Add your token to your headers as shown below:
-//image
+
+//inomnia headers image
 
 Call get http://localhost:8018/api/users/user/all and you should receive a response with the three seeded users.
-//image
+
+//insomnia users all image
 
 If you were able to get this far everything is setup correctly and functioning as expected.
+
+Happy hacking!
