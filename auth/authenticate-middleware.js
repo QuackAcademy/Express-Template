@@ -1,19 +1,17 @@
 const jwt = require('jsonwebtoken');
 const {secret} = require('./token.js');
+const functionFile = 'authenticate-middleware.js';
 
 module.exports = (req, res, next) => {
     const token = req.headers.authorization;
     if(token){
         jwt.verify(token, secret, (err, decodedToken) => {
-            if(err){
-                res.status(401).json({message: 'Invalid token'});
-            }else{
-                // console.log(decodedToken);
+            if(err){ throw `${functionFile} 401`; }
+            else{
                 req.user = {id: decodedToken.subject};
                 next();
             }
         });
-    }else{
-        res.status(400).json({message: 'No token was provided'});
     }
+    else{ throw `${functionFile} 400`; }
 };

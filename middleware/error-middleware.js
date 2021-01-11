@@ -32,6 +32,8 @@ exports.handleError = async (err, req, res) => {
         case `/users delete /user 403`: status = 403; responseObj = { message: 'Invalid credentials' }; break;
         //#endregion
         //#region functions
+        case `authenticate-middleware.js 400`: status = 400; responseObj = { message: `No token was provided` }; break;
+        case `authenticate-middleware.js 401`: status = 401; responseObj = { message: `Invalid token` }; break;
         case `utils.js discordMessage 500`: status = 500; responseObj = { message: 'Error sending message to Discord' }; break;
         case `utils.js slackMessage 500`: status = 500; responseObj = { message: 'Error sending message to Slack' }; break;
         case `utils.js validateZipCode 400`: status = 400; responseObj = { message: `Zip code is required. Endpoint: ${req.endpoint}` }; break;
