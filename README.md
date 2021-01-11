@@ -65,7 +65,10 @@ Now fill the database with seed data:
 knex seed:run
 ```
 
-### Testing functionality
+### Running automated tests
+
+
+### Testing functionality with Insomnia
 Let's call some endpoints with Insomnia (Or Postman) to make sure everything is working correctly.
 
 If you're unfamiliar with these tools, check out our article [here.](https://www.quackacademy.com/guides/backend/insomnia)
