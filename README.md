@@ -66,7 +66,15 @@ knex seed:run
 ```
 
 ### Running automated tests
+Tests can be found and updated in the /tests folder.
 
+Use the command below to run them:
+```js
+npm run test
+```
+Hopefully they all pass!
+
+//passed tests image
 
 ### Testing functionality with Insomnia
 Let's call some endpoints with Insomnia (Or Postman) to make sure everything is working correctly.
