@@ -6,20 +6,21 @@ const discordMessage = (channel, message) => {
     const functionName = `${functionFile} discordMessage`;
     let url = ''
     switch (channel){
-        case `Bug`: url = process.env.discordBugUrl; break;
         case `Error`: url = process.env.discordErrorUrl; break;
         case `Register`: url = process.env.discordSignupUrl; break;
-        case `Sugg`: url = process.env.discordSuggUrl; break;
         case `Stats`: url = process.env.discordStatsUrl; break;
         default: url = process.env.discordErrorUrl;
     }
 
-    axios.post(url, {content: message})
-    .then(response => { })
-    .catch(err => { 
-        console.log('discordMessage error:', err);
-        throw `${functionName} 500`; 
-    });
+    if(url){
+        axios.post(url, {content: message})
+        .then(response => { })
+        .catch(err => { 
+            console.log('discordMessage error:', err);
+            throw `${functionName} 500`; 
+        });
+    }
+    // else { console.log('Add process.env.discordErrorUrl if you want discord webhook to fire'); }
 }
 
 const slackMessage = (channel, message) => {
@@ -32,12 +33,15 @@ const slackMessage = (channel, message) => {
         default: url = process.env.slackErrorUrl;
     }
 
-    axios.post(url, {text: message})
-    .then(response => { })
-    .catch(err => { 
-        console.log('slackMessage error:', err);
-        throw `${functionName} 500`; 
-    });
+    if(url){
+        axios.post(url, {text: message})
+        .then(response => { })
+        .catch(err => { 
+            console.log('slackMessage error:', err);
+            throw `${functionName} 500`; 
+        });
+    }
+    // else { console.log('Add process.env.slackErrorUrl if you want slack webhook to fire'); }
 }
 
 const isValidEmail = (email) => {
