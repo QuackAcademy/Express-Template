@@ -36,6 +36,7 @@ Environment variables are secret and should never be pushed to github.
 Ensure that *.env is listed in your .gitignore file to prevent this.
 
 These environment variables need updating for the project to function:
+* process.end.DB_ENV- this needs to be set to "development" without quotes. Tells knex to create a local database.  
 * process.env.JWT_SECRET- this is the secret that your tokens get encoded/decoded with.
 * process.env.topSecretCode- this is used as a way to have 'developer only' endpoints, like requiring it when calling error-router endpoints.
 
