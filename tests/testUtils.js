@@ -2,7 +2,7 @@ const request = require('supertest');
 const server = require('../server.js');
 
 
-const getTestToken = () => {
+const getTestToken = async () => {
     await request(server).post('/api/auth/register')
     .send({
         email: "QHtestuser120391243124@gmail.com",
@@ -15,7 +15,7 @@ const getTestToken = () => {
     return response.token;
 }
 
-const deleteTestUser = (token) => {
+const deleteTestUser = async (token) => {
     await request(server).delete('/api/users/user')
     .send({ password: "testO023123#@#adSD" })
     .set({'authorization': token});
