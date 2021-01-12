@@ -21,7 +21,7 @@ router.get('/user/all', async (req, res, next) => {
     const endpoint = `${routerName} get /user/all`;
     req.endpoint = endpoint;
     try{
-        const users = await db('users');
+        const users = await db('users').select('id', 'email', 'username', 'fullName');
 
         if(users.length){ res.status(200).json(users); }
         else{ res.status(200).json({message: `No users found`}); }
