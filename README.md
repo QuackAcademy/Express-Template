@@ -71,6 +71,7 @@ Tests can be found and updated in the /tests folder.
 First, create the testing database by added the --env testing flag
 ```js
 knex migrate:latest --env testing
+knex seed:run --env testing
 ```
 Then run the tests with the command below:
 ```js
