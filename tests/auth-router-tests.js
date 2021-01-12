@@ -1,11 +1,7 @@
 const request = require('supertest');
 const server = require('../server.js');
-const db = require('../data/db-config');
-
-const wipeDB = async () => { await db('users').truncate(); }
 
 module.exports = () => {
-    wipeDB();
     describe('POST /auth/register', () => {
         it('should return status 201 if registered', async () => {
             const res = await request(server).post('/api/auth/register')
