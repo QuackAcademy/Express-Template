@@ -31,7 +31,7 @@ If working locally, create a file called .env in the root folder.
 
 You'll store variables like so: 
 
-//.env image
+![Example dot env file](https://cloud.quackacademy.com/express-template/dot_env_example.png "")
 
 Environment variables are secret and should never be pushed to github. 
 
@@ -87,13 +87,13 @@ Log in using http://localhost:8018/api/auth/login, credentials "username": "test
 
 This will return a JWT we will use to authenticate the next call.
 
-//insomnia login image
+![Insomnia login example](https://cloud.quackacademy.com/express-template/insomnia_login_example.png "")
 
 Call get http://localhost:8018/api/users/user/all and you should receive a response with the three seeded users.
 
 Add your token from logging in to your headers as shown below:
 
-//inomnia headers image
+![Insomnia get users example](https://cloud.quackacademy.com/express-template/insomnia_get_users_example.png "")
 
 If you were able to get this far everything is setup correctly and functioning as expected.
 
