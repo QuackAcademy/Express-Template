@@ -89,13 +89,11 @@ This will return a JWT we will use to authenticate the next call.
 
 //insomnia login image
 
-Add your token to your headers as shown below:
-
-//inomnia headers image
-
 Call get http://localhost:8018/api/users/user/all and you should receive a response with the three seeded users.
 
-//insomnia users all image
+Add your token from logging in to your headers as shown below:
+
+//inomnia headers image
 
 If you were able to get this far everything is setup correctly and functioning as expected.
 
