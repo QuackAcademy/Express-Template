@@ -3,7 +3,7 @@ const server = require('../server.js');
 
 
 const getTestToken = async () => {
-    await request(server).post('/api/auth/register')
+    await request(server).post('/api/auth/login')
     .send({
         email: "QHtestuser120391243124@gmail.com",
         username: "QHtestuser120391243124",

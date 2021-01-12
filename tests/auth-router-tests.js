@@ -2,41 +2,7 @@ const request = require('supertest');
 const server = require('../server.js');
 const db = require('../data/db-config');
 
-const getTestToken = async () => {
-    await request(server).post('/api/auth/register')
-    .send({
-        email: "QHtestuser120391243124@gmail.com",
-        username: "QHtestuser120391243124",
-        password: "testO023123#@#adSD",
-        name: "Test User"
-    });
-    const response = await request(server).post('/api/auth/register')
-    .send({ username: "QHtestuser120391243124", password: "testO023123#@#adSD" });
-    return response.token;
-}
-
-const deleteTestUser = async (token) => {
-    await request(server).delete('/api/users/user')
-    .send({ password: "testO023123#@#adSD" })
-    .set({'authorization': token});
-}
-
-
-describe('auth router', async () => {
-    describe('the server', () => {
-        describe('GET /', () => {
-            it('it should return status 200', async () => {
-                const res = await request(server).get('/');
-                expect(res.status).toBe(200);
-            });
-            it('it should return the correct object', async () => {
-                const res = await request(server).get('/');
-                expect(res.type).toBe('application/json');
-                expect(res.body).toEqual({message: 'hi'});
-            });
-            
-        });
-    });
+describe('auth router', () => {
     describe('POST /auth/register', () => {
         it('should return status 201 if registered', async () => {
             // await deleteTestUser(await getTestToken());
