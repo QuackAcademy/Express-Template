@@ -68,17 +68,13 @@ knex seed:run
 ### Running automated tests
 Tests can be found and updated in the /tests folder.
 
-First, create the testing database by added the --env testing flag
-```js
-knex migrate:latest --env testing
-```
-Then run the tests with the command below:
+Run the tests with the command below:
 ```js
 npm run test
 ```
 Hopefully they all pass!
 
-//passed tests image
+![Testing example](https://cloud.quackacademy.com/express-template/test_example.png "")
 
 ### Testing functionality with Insomnia
 Let's call some endpoints with Insomnia (Or Postman) to make sure everything is working correctly.
