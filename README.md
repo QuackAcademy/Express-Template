@@ -68,7 +68,11 @@ knex seed:run
 ### Running automated tests
 Tests can be found and updated in the /tests folder.
 
-Use the command below to run them:
+First, create the testing database by added the --env testing flag
+```js
+knex migrate:latest --env testing
+```
+Then run the tests with the command below:
 ```js
 npm run test
 ```
