@@ -56,7 +56,7 @@ exports.handleError = async (err, req, res) => {
         let errorText = ''
         if (status === 500){ errorText = `Error 500 at ${errObj.endpoint}.\nMessage: ${errObj.errorMessage}. ${user ? `User: ${user.first_name} ${user.last_name} ID: ${req.user ? req.user.id : ''}` : ''}`; }
         else { errorText = `Error ${errObj.errorID} at ${errObj.endpoint}.\nMessage: ${errObj.errorMessage}. ${user ? `User: ${user.first_name} ${user.last_name} ID: ${req.user ? req.user.id : ''}` : ''}`; }
-        console.error(errorText);
+        if (process.env.DB_ENV !== 'testing'){ console.error(errorText); }
 
         res.status(status).json(responseObj);
 
