@@ -2,10 +2,12 @@ const request = require('supertest');
 const server = require('../server.js');
 const db = require('../data/db-config');
 
-describe('auth router', () => {
+const wipeDB = async () => { await db('users').truncate(); }
+
+module.exports = () => {
+    wipeDB();
     describe('POST /auth/register', () => {
         it('should return status 201 if registered', async () => {
-            // await deleteTestUser(await getTestToken());
             const res = await request(server).post('/api/auth/register')
             .send({
                 email: "QHtestuser120391243124@gmail.com",
@@ -13,8 +15,6 @@ describe('auth router', () => {
                 password: "testO023123#@#adSD",
                 fullName: "quack test user"
             })
-            // .set({'Content-Type': 'application/json'})
-            // .set({'authorization': 'wtf'})
             console.log('abc res.status:', res.status);
             console.log('abc res.body:', res.body);
             expect(res.status).toBe(201);
@@ -36,5 +36,4 @@ describe('auth router', () => {
             expect(auth.type).toMatch(/json/i);
         })
     });
-    // deleteTestUser(getTestToken());
-});
+}

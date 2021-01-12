@@ -1,5 +1,6 @@
 const serverTests = require('./server-tests.js');
-//  authTests from './auth-router-tests.js';
+const authTests = require ('./auth-router-tests.js');
 
 
 describe('Server tests', serverTests);
+describe('Auth router tests', authTests);
