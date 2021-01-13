@@ -2,25 +2,61 @@ const request = require('supertest');
 const server = require('../server.js');
 
 let token = '';
-// case `/auth post /register 400`: status = 400; responseObj = { message: 'Email, username, password, and fullName are required.' }; break;
-// case `/auth post /register 400-2`: status = 400; responseObj = { message: 'Username must only contain characters A-Z, _, and 0-9. Username must start with a letter.' }; break;
-// case `/auth post /register 409`: status = 409; responseObj = { message: `Username '${req.username}' is already in use.` }; break;
-// case `/auth post /register 409-2`: status = 409; responseObj = { message: `There is already an account associated with the email: ${req.email}` }; break;
 
 module.exports = () => {
     describe('POST /auth/register', () => {
         it('Should return status 201 if registered', async () => {
             const res = await request(server).post('/api/auth/register')
-            .send({
-                email: "QHtestuser120391243124@gmail.com",
-                username: "QHtestuser12039c1243124",	
-                password: "testO023123#@#adSD",
-                fullName: "quack test user"
-            })
-            // console.log('abc res.status:', res.status);
-            // console.log('abc res.body:', res.body);
+            .send({ email: "QHtestuser120391243124@gmail.com", username: "QHtestuser12039c1243124", password: "testO023123#@#adSD", fullName: "quack test user" })
             expect(res.status).toBe(201);
             expect(res.type).toMatch(/json/i);
+            expect(res.body.message).toContain('Successfully added user #')
+        })
+        it('Should return status 400 for bad requests', async () => {
+            const missingEmail = await request(server).post('/api/auth/register')
+            .send({ username: "QHtestuser12039c1243124", password: "testO023123#@#adSD", fullName: "quack test user" })
+            expect(missingEmail.status).toBe(400);
+            expect(missingEmail.body.message).toBe('Email, username, password, and fullName are required.')
+
+            const missingUsername = await request(server).post('/api/auth/register')
+            .send({ email: "QHtestuser120391243124@gmail.com", password: "testO023123#@#adSD", fullName: "quack test user" })
+            expect(missingUsername.status).toBe(400);
+            expect(missingUsername.body.message).toBe('Email, username, password, and fullName are required.')
+            
+            const missingPassword = await request(server).post('/api/auth/register')
+            .send({ email: "QHtestuser120391243124@gmail.com", username: "QHtestuser12039c1243124", fullName: "quack test user" })
+            expect(missingPassword.status).toBe(400);
+            expect(missingPassword.body.message).toBe('Email, username, password, and fullName are required.')
+            
+            const missingName = await request(server).post('/api/auth/register')
+            .send({ email: "QHtestuser120391243124@gmail.com", username: "QHtestuser12039c1243124", password: "testO023123#@#adSD" })
+            expect(missingName.status).toBe(400);
+            expect(missingName.body.message).toBe('Email, username, password, and fullName are required.')
+            
+            const missingAll = await request(server).post('/api/auth/register')
+            expect(missingAll.status).toBe(400);
+            expect(missingAll.body.message).toBe('Email, username, password, and fullName are required.')
+        })
+        it('Should return status 400 and reject invalid usernames', async () => {
+            const invalidCharacters = await request(server).post('/api/auth/register')
+            .send({ email: "QHtestuser120391243124@gmail.com", username: "QHtestuse@@@@@r12039c1243124", password: "testO023123#@#adSD", fullName: "quack test user" })
+            expect(invalidCharacters.status).toBe(400);
+            expect(invalidCharacters.body.message).toBe('Username must only contain characters A-Z, _, and 0-9. Username must start with a letter.')
+
+            const numberFirst = await request(server).post('/api/auth/register')
+            .send({ email: "QHtestuser120391243124@gmail.com", username: "1QHtestuser12039c1243124", password: "testO023123#@#adSD", fullName: "quack test user" })
+            expect(numberFirst.status).toBe(400);
+            expect(numberFirst.body.message).toBe('Username must only contain characters A-Z, _, and 0-9. Username must start with a letter.')
+        })
+        it('Should return status 409 for conflicts', async () => {
+            const usernameInUse = await request(server).post('/api/auth/register')
+            .send({ email: "dajlsdasdh@gmail.com", username: "QHtestuser12039c1243124",	password: "testO023123#@#adSD", fullName: "quack test user" })
+            expect(usernameInUse.status).toBe(409);
+            expect(usernameInUse.body.message).toBe(`Username 'QHtestuser12039c1243124' is already in use.`)
+            const emailInUse = await request(server).post('/api/auth/register')
+            .send({ email: "QHtestuser120391243124@gmail.com", username: "QHtestuser123", password: "testO023123#@#adSD", fullName: "quack test user" })
+            expect(emailInUse.status).toBe(409);
+            expect(emailInUse.body.message).toBe('There is already an account associated with the email: QHtestuser120391243124@gmail.com')
         })
     })
     describe('POST /auth/login', () => {
