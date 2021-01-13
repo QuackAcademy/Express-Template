@@ -2,7 +2,7 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const db = require('../data/db-config.js');
 const userDb = require('../data/users-model.js');
-const {generateToken} = require('./token.js');
+const {generateToken} = require('../middleware/token.js');
 const routerName = '/auth'
 
 router.post('/register', async (req, res, next) => {
