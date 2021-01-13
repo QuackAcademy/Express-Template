@@ -2,7 +2,7 @@ const router = require('express').Router();
 const db = require('../data/dbConfig');
 const utils = require('../utils.js');
 const routerName = '/errors';
-const topSecretCode = process.env.topSecretCode || console.log('Missing environment variable "topSecretCode" in error-router.js');
+const topSecretCode = process.env.topSecretCode ?? console.log('Missing environment variable "topSecretCode" in error-router.js');
 
 
 // get errors by req.body query vars
