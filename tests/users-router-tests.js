@@ -115,6 +115,23 @@ module.exports = () => {
         })
     });
     describe('DELETE /users/user', () => {
-        // case `/users delete /user 403`: status = 403; responseObj = { message: 'Invalid credentials' }; break;
+        it('Should return status 403 if password is incorrect', async () => {
+            const res = await request(server).delete('/api/users/user')
+            .send({ password: 'notyourpassword' }).set({'authorization': token});
+            expect(res.status).toBe(403);
+            expect(res.body.message).toBe('Invalid credentials')
+        })
+        it('Should return status 200 if user was deleted', async () => {
+            const res = await request(server).delete('/api/users/user')
+            .send({ password: '2testO023123#@#adSD' }).set({'authorization': token});
+            expect(res.status).toBe(200);
+            expect(res.body.message).toBe('User successfully deleted')
+        })
+        it('Should gave deleted user and return status 404 when trying to delete again', async () => {
+            const res = await request(server).delete('/api/users/user')
+            .send({ password: '2testO023123#@#adSD' }).set({'authorization': token});
+            expect(res.status).toBe(404);
+            expect(res.body.message).toBe('User not found')
+        })
     });
 }
