@@ -36,7 +36,7 @@ router.get('/:id', async (req, res, next) => {
         if(isNaN(req.params.id)){ req.received = req.params.id; throw `${endpoint} 400`; }
         const user = await userDb.findById(req.params.id);
         if(user){ res.status(200).json({...user, password: null}); }
-        else{ throw `${endpoint} 400`; }
+        else{ req.received = req.params.id; throw `${endpoint} 404`; }
     } catch(err){ next(err)}
 });
 

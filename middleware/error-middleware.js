@@ -20,7 +20,7 @@ exports.handleError = async (err, req, res) => {
         //#endregion
         //#region users router
         case `/users get /:id 400`: status = 400; responseObj = { message: `Param id must be a number. Received: ${req.received}` }; break;
-        case `/users get /:id 404`: status = 404; responseObj = { message: `User with id ${req.user.id} not found` }; break;
+        case `/users get /:id 404`: status = 404; responseObj = { message: `User with id ${req.received} not found` }; break;
         case `/users get /user 404`: status = 404; responseObj = { message: `User with id ${req.user.id} not found` }; break;
         case `/users put /user 400`: status = 400; responseObj = { message: `Current password is required` }; break;
         case `/users put /user 400-2`: status = 400; responseObj = { message: `Username must only contain characters A-Z, _, and 0-9. Username must start with a letter` }; break;
