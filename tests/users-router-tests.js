@@ -46,12 +46,20 @@ module.exports = () => {
     });
     describe('GET /users/user', () => {
         // case `/users get /user 404`: status = 404; responseObj = { message: `User with id ${req.user.id} not found` }; break;
-        
+        it('Should return status 200 and correct data for a valid request', async () => {
+            const res = await request(server).get('/api/users/user').set({'authorization': token});
+            expect(res.status).toBe(200);
+            expect(res.body).toEqual({ id: testUserID, email: 'quackquack@gmail.com', username: "qhtestuser", password: null, fullName: 'testerson' });
+        })
     });
     describe('GET /users/all', () => {
-        it('Should return status 200', async () => {
+        it('Should return status 200 and correct data for a valid request', async () => {
             const res = await request(server).get('/api/users/user/all').set({'authorization': token});
             expect(res.status).toBe(200);
+            expect(res.body).toEqual([
+                {"email": "quackquack@gmail.com", "fullName": "testerson", "id": 1, "username": "qhtestuser"}, 
+                {"email": "qhtestuser120391243124@gmail.com", "fullName": "quack test user", "id": 2, "username": "qhtestuser12039c1243124"} 
+            ]);
         })
     });
     describe('PUT /users/user', () => {
