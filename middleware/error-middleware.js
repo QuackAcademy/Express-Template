@@ -23,7 +23,8 @@ exports.handleError = async (err, req, res) => {
         case `/users get /:id 404`: status = 404; responseObj = { message: `User with id ${req.received} not found` }; break;
         case `/users get /user 404`: status = 404; responseObj = { message: `User with id ${req.user.id} not found` }; break;
         case `/users put /user 400`: status = 400; responseObj = { message: `Current password is required` }; break;
-        case `/users put /user 400-2`: status = 400; responseObj = { message: `Username must only contain characters A-Z, _, and 0-9. Username must start with a letter` }; break;
+        case `/users put /user 400-2`: status = 400; responseObj = { message: `No new values were sent` }; break;
+        case `/users put /user 400-3`: status = 400; responseObj = { message: `Username must only contain characters A-Z, _, and 0-9. Username must start with a letter` }; break;
         case `/users put /user 403`: status = 403; responseObj = { message: `Invalid credentials` }; break;
         case `/users put /user 404`: status = 404; responseObj = { message: `User not found` }; break;
         case `/users put /user 409`: status = 409; responseObj = { message: `Username '${req.username}' is already in use` }; break;

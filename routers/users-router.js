@@ -56,8 +56,9 @@ router.put('/user', async (req, res, next) => {
    
     try{
         if(!password){ throw `${endpoint} 400`; }
+        if(!newPassword && !email && !username && !fullName ){ throw `${endpoint} 400-2`; }
         if(username){
-            if(!(/^[a-z][a-z0-9_]*$/i.test(username))){ throw `${endpoint} 400-2`; }
+            if(!(/^[a-z][a-z0-9_]*$/i.test(username))){ throw `${endpoint} 400-3`; }
             const foundUsername = await db('users').where({username: newValues.username}).first();
             if(foundUsername){ req.username = username; throw `${endpoint} 409`; }
         }
