@@ -49,7 +49,10 @@ module.exports = () => {
         
     });
     describe('GET /users/all', () => {
-        
+        it('Should return status 200', async () => {
+            const res = await request(server).get('/api/users/user/all').set({'authorization': token});
+            expect(res.status).toBe(200);
+        })
     });
     describe('PUT /users/user', () => {
         it('Should return status 400 if password is missing', async () => {
