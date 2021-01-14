@@ -13,9 +13,6 @@ const createTestUser = async () => {
 module.exports = () => {
     createTestUser();
     
-    // console.log(`res.status: ${res.status}, message: ${res.body.message}`)
-    // console.log(`res.status: ${res.status}, body: `, res.body)
-    
     it('Should require authorization', async () => {
         const res = await request(server).get(`/api/users/${testUserID}`);
         expect(res.status).toBe(400);
@@ -50,6 +47,13 @@ module.exports = () => {
             const res = await request(server).get('/api/users/user').set({'authorization': token});
             expect(res.status).toBe(200);
             expect(res.body).toEqual({ id: testUserID, email: 'quackquack@gmail.com', username: "qhtestuser", password: null, fullName: 'testerson' });
+        })
+        it("Should return status 404 if token user isn't found", async () => {
+            // I'll have to test this by providing a valid (can be decoded with secret and has proper values) token of a deleted user
+            const invalidToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0Ijo2LCJpYXQiOjE2MTA2MTU4NjMsImV4cCI6MTYxMTY5NTg2M30.W33UfE8AUdI5AoIMXk-NsuJfn_UxAbxm_1OuoUkXINE';
+            const res = await request(server).get('/api/users/user').set({'authorization': invalidToken});
+            expect(res.status).toBe(404);
+            expect(res.body.message).toEqual('User with id 6 not found');
         })
     });
     describe('GET /users/all', () => {
