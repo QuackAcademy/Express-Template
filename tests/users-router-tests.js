@@ -12,7 +12,7 @@ const createTestUser = async () => {
 
 module.exports = () => {
     createTestUser();
-    
+
     it('Should require authorization', async () => {
         const res = await request(server).get(`/api/users/${testUserID}`);
         expect(res.status).toBe(400);
@@ -55,6 +55,11 @@ module.exports = () => {
             expect(res.status).toBe(404);
             expect(res.body.message).toEqual('User with id 6 not found');
         })
+        it(`Should not include user's password in response`, async () => {
+            const res = await request(server).get('/api/users/user').set({'authorization': token});
+            expect(res.status).toBe(200);
+            expect(res.body.password).toBe(null);
+        });
     });
     describe('GET /users/all', () => {
         it('Should return status 200 and correct data for a valid request', async () => {
