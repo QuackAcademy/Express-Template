@@ -90,11 +90,10 @@ router.delete('/user', async (req, res, next) => {
     try{
         if (!password){ throw `${endpoint} 400`; }
 
-        const user = await db('users')
-        .where({id: req.user.id})
-        .first();
+        const user = await db('users').where({id: req.user.id}).first();
+        if(!user){ throw `${endpoint} 404`; }
 
-        if(user && bcrypt.compareSync(password, user.password)){
+        if(bcrypt.compareSync(password, user.password)){
             await userDb.remove(req.user.id);
             res.status(200).json({message: 'User successfully deleted'});
         }

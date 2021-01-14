@@ -31,6 +31,7 @@ exports.handleError = async (err, req, res) => {
         case `/users put /user 409-2`: status = 409; responseObj = { message: `Email '${req.email}' is already in use` }; break;
         case `/users delete /user 400`: status = 400; responseObj = { message: 'Password is required to delete user' }; break;
         case `/users delete /user 403`: status = 403; responseObj = { message: 'Invalid credentials' }; break;
+        case `/users delete /user 404`: status = 404; responseObj = { message: `User not found` }; break;
         //#endregion
         //#region functions
         case `authenticate-middleware.js 400`: status = 400; responseObj = { message: `No token was provided` }; break;
