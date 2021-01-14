@@ -14,6 +14,13 @@ module.exports = {
     useNullAsDefault: true,
     migrations: { directory: './data/migrations' },
     seeds: { directory: './data/seeds' },
+    log: { 
+      warn(message){
+        if (!message.includes('.returning()')){
+          this._log(message, this._warn, color.yellow);
+        }
+      }
+    }
   },
 
   production: {
@@ -21,5 +28,5 @@ module.exports = {
     connection: process.env.DATABASE_URL,
     migrations: { directory: './data/migrations' },
     seeds: { directory: './data/seeds' } 
-  }
+  },
 };
