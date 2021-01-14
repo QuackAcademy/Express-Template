@@ -42,7 +42,6 @@ module.exports = () => {
         });
     });
     describe('GET /users/user', () => {
-        // case `/users get /user 404`: status = 404; responseObj = { message: `User with id ${req.user.id} not found` }; break;
         it('Should return status 200 and correct data for a valid request', async () => {
             const res = await request(server).get('/api/users/user').set({'authorization': token});
             expect(res.status).toBe(200);
