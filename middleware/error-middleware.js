@@ -19,7 +19,7 @@ exports.handleError = async (err, req, res) => {
         case `/auth post /login 403`: status = 403; responseObj = { message: 'Invalid username or password' }; break;
         //#endregion
         //#region users router
-        case `/users get /:id 400`: status = 400; responseObj = { message: `Param id must be a number. Received: ${req.params.id}` }; break;
+        case `/users get /:id 400`: status = 400; responseObj = { message: `Param id must be a number. Received: ${req.received}` }; break;
         case `/users get /:id 404`: status = 404; responseObj = { message: `User with id ${req.user.id} not found` }; break;
         case `/users get /user 404`: status = 404; responseObj = { message: `User with id ${req.user.id} not found` }; break;
         case `/users put /user 400`: status = 400; responseObj = { message: `Current password is required` }; break;

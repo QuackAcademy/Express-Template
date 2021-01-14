@@ -33,7 +33,7 @@ router.get('/:id', async (req, res, next) => {
     const endpoint = `${routerName} get /:id`;
     req.endpoint = endpoint;
     try{
-        if(isNaN(req.params.id)){ throw `${endpoint} 400`; }
+        if(isNaN(req.params.id)){ req.received = req.params.id; throw `${endpoint} 400`; }
         const user = await userDb.findById(req.params.id);
         if(user){ res.status(200).json({...user, password: null}); }
         else{ throw `${endpoint} 400`; }
