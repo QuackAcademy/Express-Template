@@ -3,7 +3,7 @@ const server = require('../server.js');
 
 let token = '';
 const createTestUser = async () => {
-    await request(server).post('/api/auth/register').send({ email: 'quackquack@gmail.com', username: "QHtestuser", password: "testO023123#@#adSD", fullName: 'testerson' });
+    // await request(server).post('/api/auth/register').send({ email: 'quackquack@gmail.com', username: "QHtestuser", password: "testO023123#@#adSD", fullName: 'testerson' });
     const loginResponse = await request(server).post('/api/auth/login').send({ username: "QHtestuser", password: "testO023123#@#adSD", });
     testUserID = loginResponse.body.user?.id;
     token = loginResponse.body.token;
@@ -13,7 +13,7 @@ module.exports = () => {
     createTestUser();
 
     it('Should require authorization', async () => {
-        const res = await request(server).post(`/api/errors/getByQuery`);
+        const res = await request(server).post(`/api/error/getByQuery`);
         expect(res.status).toBe(400);
         expect(res.body.message).toEqual('No token was provided');
     });
