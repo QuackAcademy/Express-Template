@@ -6,6 +6,7 @@ const helmet = require('helmet');
 
 const authRouter = require('./routers/auth-router.js');
 const userRouter = require('./routers/users-router.js');
+const errorRouter = require('./routers/error-router.js');
 
 const authenticate = require('./middleware/authenticate-middleware.js');
 const { handleError } = require('./middleware/error-middleware.js');
@@ -18,6 +19,7 @@ server.use(express.json());
 
 server.use('/api/auth', authRouter);
 server.use('/api/users', authenticate, userRouter);
+server.use('/api/error', authenticate, errorRouter);
 
 server.use((err, req, res, next) => { handleError(err, req, res); });
 
