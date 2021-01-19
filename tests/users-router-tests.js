@@ -65,8 +65,9 @@ module.exports = () => {
             const res = await request(server).get('/api/users/user/all').set({'authorization': token});
             expect(res.status).toBe(200);
             expect(res.body).toEqual([
-                {"email": "quackquack@gmail.com", "fullName": "testerson", "id": 1, "username": "qhtestuser"}, 
-                {"email": "qhtestuser120391243124@gmail.com", "fullName": "quack test user", "id": 2, "username": "qhtestuser12039c1243124"} 
+                {"email": "quackquack@gmail.com", "fullName": "testerson", "id": 1, "username": "qhtestuser"},
+                {"email": 'quackquackerror@gmail.com', "username": "qhtestusererror", "id": 2, "fullName": 'testerson' },
+                {"email": "qhtestuser120391243124@gmail.com", "fullName": "quack test user", "id": 3, "username": "qhtestuser12039c1243124"} 
             ]);
         })
     });
