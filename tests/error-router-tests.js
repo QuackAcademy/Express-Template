@@ -3,8 +3,9 @@ const server = require('../server.js');
 
 let token = '';
 const createTestUser = async () => {
-    // await request(server).post('/api/auth/register').send({ email: 'quackquack@gmail.com', username: "QHtestuser", password: "testO023123#@#adSD", fullName: 'testerson' });
-    const loginResponse = await request(server).post('/api/auth/login').send({ username: "QHtestuser", password: "testO023123#@#adSD", });
+    await request(server).post('/api/auth/register').send({ email: 'quackquackerror@gmail.com', username: "QHtestuserError", password: "testO023123#@#adSD", fullName: 'testerson' });
+    const loginResponse = await request(server).post('/api/auth/login').send({ username: "QHtestuserError", password: "testO023123#@#adSD", });
+    console.log('response body', loginResponse.body)
     testUserID = loginResponse.body.user?.id;
     token = loginResponse.body.token;
 }
@@ -17,13 +18,27 @@ module.exports = () => {
         expect(res.status).toBe(400);
         expect(res.body.message).toEqual('No token was provided');
     });
+
+    // case `/errors post /getByQuery 400-2`: status = 400; responseObj = { message: 'sortType can only be set to null, asc, or desc' }; break;
+    // case `/errors post /getByQuery 400-3`: status = 400; responseObj = { message: 'userID must be null or a number' }; break;
+    // case `/errors post /getByQuery 404`: status = 404; responseObj = { message: 'No errors found' }; break;
+    // case `/errors delete /deleteByQuery 400`: status = 400; responseObj = { message: 'Protected endpoint, password is required' }; break;
+    // case `/errors delete /deleteByQuery 400-2`: status = 400; responseObj = { message: 'userID must be null or a number' }; break;
+    // case `/errors delete /deleteByQuery 400-3`: status = 400; responseObj = { message: 'deleteAll must be true if trying to delete everything. Otherwise, provide query vars.' }; break;
+    // case `/errors delete /deleteByQuery 403`: status = 403; responseObj = { message: 'Invalid Password, access denied' }; break;
+    // case `/errors delete /deleteByQuery 404`: status = 404; responseObj = { message: 'No errors found' }; break;
     describe('POST /errors/getByQuery', () => {
-        // it('Should return status 201 if registered', async () => {
-        //     const res = await request(server).post('/api/auth/register')
-        //     .send({ email: "QHtestuser120391243124@gmail.com", username: "QHtestuser12039c1243124", password: "testO023123#@#adSD", fullName: "quack test user" })
-        //     expect(res.status).toBe(201);
-        //     expect(res.type).toMatch(/json/i);
-        //     expect(res.body.message).toContain('Successfully added user #')
-        // })
+        it('Should return status 400 if password is missing', async () => {
+            const res = await request(server).post(`/api/error/getByQuery`)
+            .set({'authorization': token});
+            expect(res.status).toBe(400);
+            expect(res.body.message).toContain('Protected endpoint, password is required')
+        })
+        it('Should return status 403 if password incorrect', async () => {
+            const res = await request(server).post(`/api/error/getByQuery`)
+            .send({ password: 'wrong password' }).set({'authorization': token});
+            expect(res.status).toBe(403);
+            expect(res.body.message).toContain('Invalid Password, access denied')
+        })
     })
 }
