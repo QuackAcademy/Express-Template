@@ -23,7 +23,6 @@ exports.handleError = async (err, req, res) => {
         case `/errors post /getByQuery 400-2`: status = 400; responseObj = { message: 'sortType can only be set to null, asc, or desc' }; break;
         case `/errors post /getByQuery 400-3`: status = 400; responseObj = { message: 'userID must be null or a number' }; break;
         case `/errors post /getByQuery 403`: status = 403; responseObj = { message: 'Invalid Password, access denied' }; break;
-        case `/errors post /getByQuery 404`: status = 404; responseObj = { message: 'No errors found' }; break;
         case `/errors delete /deleteByQuery 400`: status = 400; responseObj = { message: 'Protected endpoint, password is required' }; break;
         case `/errors delete /deleteByQuery 400-2`: status = 400; responseObj = { message: 'userID must be null or a number' }; break;
         case `/errors delete /deleteByQuery 400-3`: status = 400; responseObj = { message: 'deleteAll must be true if trying to delete everything. Otherwise, provide query vars.' }; break;
