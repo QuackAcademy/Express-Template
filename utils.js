@@ -59,4 +59,19 @@ const validateZipCode = (zipCode, endpoint, req) => {
     if (isNaN(zipCode)){ throw `${functionName} 400-3`; }
 }
 
-module.exports = { slackMessage, discordMessage, isValidEmail, validateZipCode }
+const validateDate = (date) => {
+    const functionName = `${functionFile} validateDate`;
+
+    if (isNaN(Number(date.slice(0,2)))) {throw `${functionName} 400`;}
+    if (date.slice(2,3) !== '/') {throw `${functionName} 400`;}
+    if (isNaN(Number(date.slice(3,5)))) {throw `${functionName} 400`;}
+    if (date.slice(5,6) !== '/') {throw `${functionName} 400`;}
+    if (isNaN(Number(date.slice(6,10)))) {throw `${functionName} 400`;}
+
+    if (Number(date.slice(0,2) < 1 || Number(date.slice(0,2) > 12)) ) {throw `${functionName} 400-2`;}
+    if (Number(date.slice(3,5) < 1 || Number(date.slice(3,5) > 31)) ) {throw `${functionName} 400-3`;}
+    
+    return true;
+}
+
+module.exports = { slackMessage, discordMessage, isValidEmail, validateZipCode, validateDate }
