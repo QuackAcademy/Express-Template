@@ -35,7 +35,7 @@ router.post('/getByQuery', async (req, res, next) => {
             .orderBy('errorDate', sortType);
 
         if(result){ res.status(200).json(result); } 
-        else{ throw `${endpoint} 404`; }
+        else{ res.status(200).json({message: 'No errors found with provided values'}); }
     } catch (err) { next(err); }
 });
 
