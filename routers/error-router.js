@@ -64,12 +64,12 @@ router.delete('/deleteByQuery', async (req, res, next) => {
             try {
                 const deleted = await trx('errors').where((qb) => {
                     if (fromDate){ qb.whereBetween('errorDate', [fromDate, toDate]); }
-                    if (errorID){ qb.andWhere({errorID}); }
+                    if (errorID){ qb.andWhere({id: errorID}); }
                     if (userID){ qb.andWhere({'user_id': userID}); }
                 })
                 .del();
 
-                if (deleted){ console.log('deleteByQuery deleted:', deleted); return true; }
+                if (deleted){ console.log(`deleteByQuery: ${deleted} error(s) deleted`); return true; }
                 else { throw `${endpoint} 404`; }
             } catch (err) { throw err; }
         });
