@@ -82,12 +82,14 @@ module.exports = () => {
             expect(res.status).toBe(200);
             expect(res.body.message).toEqual('Error(s) successfully deleted.')
         })
-        // it('Should be able to delete errors from userID', async () => {
-        //     const res = await request(server).delete(`/api/error/deleteByQuery`)
-        //     .send({ password: 'quackquack', }).set({'authorization': token});
-        //     expect(res.status).toBe(200);
-        //     expect(res.body.message).toEqual('Error(s) successfully deleted.')
-        // })
+        it('Should be able to delete errors from userID', async () => {
+            const date = new Date();
+            const formattedDate = `${date.getMonth()+1 < 10 ? `0${date.getMonth()+1}` : date.getMonth()+1}/${date.getDate() < 10 ? `0${date.getDate()}`: date.getDate()}/${date.getFullYear()}`;
+            const res = await request(server).delete(`/api/error/deleteByQuery`)
+            .send({ password: 'quackquack', fromDate: formattedDate, }).set({'authorization': token});
+            expect(res.status).toBe(200);
+            expect(res.body.message).toEqual('Error(s) successfully deleted.')
+        })
         // it('Should be able to delete errors by date range', async () => {
         //     const res = await request(server).delete(`/api/error/deleteByQuery`)
         //     .send({ password: 'quackquack', }).set({'authorization': token});
@@ -103,7 +105,7 @@ module.exports = () => {
         // it('Should return status 404 if no errors found for provided query', async () => {
         //     const res = await request(server).delete(`/api/error/deleteByQuery`)
         //     .send({ password: 'quackquack', }).set({'authorization': token});
-        //     expect(res.status).toBe(404);
+        //     expect(res.status).toBe(404);    
         //     expect(res.body.message).toEqual('No errors found')
         // })
     })
