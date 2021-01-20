@@ -49,6 +49,9 @@ exports.handleError = async (err, req, res) => {
         case `authenticate-middleware.js 401`: status = 401; responseObj = { message: `Invalid token` }; break;
         case `utils.js discordMessage 500`: status = 500; responseObj = { message: 'Error sending message to Discord' }; break;
         case `utils.js slackMessage 500`: status = 500; responseObj = { message: 'Error sending message to Slack' }; break;
+        case `utils.js validateDate 400`: status = 400; responseObj = { message: 'Date format: mm/dd/yyyy' }; break;
+        case `utils.js validateDate 400-2`: status = 400; responseObj = { message: 'Month must be between 1 and 12' }; break;
+        case `utils.js validateDate 400-3`: status = 400; responseObj = { message: 'Date must be between 1 and 31' }; break;
         case `utils.js validateZipCode 400`: status = 400; responseObj = { message: `Zip code is required. Endpoint: ${req.endpoint}` }; break;
         case `utils.js validateZipCode 400-2`: status = 400; responseObj = { message: `Zip code must be five digits. Endpoint: ${req.endpoint}` }; break;
         case `utils.js validateZipCode 400-3`: status = 400; responseObj = { message: `Zip code must be a number. Endpoint: ${req.endpoint}` }; break;
