@@ -18,11 +18,6 @@ module.exports = () => {
         expect(res.body.message).toEqual('No token was provided');
     });
 
-    // case `/errors delete /deleteByQuery 400`: status = 400; responseObj = { message: 'Protected endpoint, password is required' }; break;
-    // case `/errors delete /deleteByQuery 400-2`: status = 400; responseObj = { message: 'userID must be null or a number' }; break;
-    // case `/errors delete /deleteByQuery 400-3`: status = 400; responseObj = { message: 'deleteAll must be true if trying to delete everything. Otherwise, provide query vars.' }; break;
-    // case `/errors delete /deleteByQuery 403`: status = 403; responseObj = { message: 'Invalid Password, access denied' }; break;
-    // case `/errors delete /deleteByQuery 404`: status = 404; responseObj = { message: 'No errors found' }; break;
     describe('POST /errors/getByQuery', () => {
         it('Should return status 400 if password is missing', async () => {
             const res = await request(server).post(`/api/error/getByQuery`)
@@ -52,7 +47,62 @@ module.exports = () => {
             const res = await request(server).post(`/api/error/getByQuery`)
             .send({ password: 'quackquack', }).set({'authorization': token});
             expect(res.status).toBe(200);
-            console.log(res.body);
         })
+    })
+    describe('DELETE /errors/getByQuery', () => {
+        it('Should return status 400 if password is missing', async () => {
+            const res = await request(server).delete(`/api/error/deleteByQuery`)
+            .set({'authorization': token});
+            expect(res.status).toBe(400);
+            expect(res.body.message).toEqual('Protected endpoint, password is required')
+        })
+        it('Should return status 400 if userID has an invalid value', async () => {
+            const res = await request(server).delete(`/api/error/deleteByQuery`)
+            .send({ password: 'quackquack', userID: 'fish' }).set({'authorization': token});
+            expect(res.status).toBe(400);
+            expect(res.body.message).toEqual('userID must be null or a number')
+        })
+        it("Should return status 400 if deleteAll isn't true and no query vars provided", async () => {
+            const res = await request(server).delete(`/api/error/deleteByQuery`)
+            .send({ password: 'quackquack', }).set({'authorization': token});
+            expect(res.status).toBe(400);
+            expect(res.body.message).toEqual('deleteAll must be true if trying to delete everything. Otherwise, provide query vars.')
+        })
+        it('Should return status 403 if password incorrect', async () => {
+            const res = await request(server).delete(`/api/error/deleteByQuery`)
+            .send({ password: 'wrong password' }).set({'authorization': token});
+            expect(res.status).toBe(403);
+            expect(res.body.message).toEqual('Invalid Password, access denied')
+        })
+        // it('Should be able to delete a single error', async () => {
+        //     const res = await request(server).delete(`/api/error/deleteByQuery`)
+        //     .send({ password: 'quackquack', }).set({'authorization': token});
+        //     expect(res.status).toBe(200);
+        //     expect(res.body.message).toEqual('deleteAll must be true if trying to delete everything. Otherwise, provide query vars.')
+        // })
+        // it('Should be able to delete errors from userID', async () => {
+        //     const res = await request(server).delete(`/api/error/deleteByQuery`)
+        //     .send({ password: 'quackquack', }).set({'authorization': token});
+        //     expect(res.status).toBe(200);
+        //     expect(res.body.message).toEqual('deleteAll must be true if trying to delete everything. Otherwise, provide query vars.')
+        // })
+        // it('Should be able to delete errors by date range', async () => {
+        //     const res = await request(server).delete(`/api/error/deleteByQuery`)
+        //     .send({ password: 'quackquack', }).set({'authorization': token});
+        //     expect(res.status).toBe(200);
+        //     expect(res.body.message).toEqual('deleteAll must be true if trying to delete everything. Otherwise, provide query vars.')
+        // })
+        // it('Should be able to delete all errors', async () => {
+        //     const res = await request(server).delete(`/api/error/deleteByQuery`)
+        //     .send({ password: 'quackquack', }).set({'authorization': token});
+        //     expect(res.status).toBe(200);
+        //     expect(res.body.message).toEqual('deleteAll must be true if trying to delete everything. Otherwise, provide query vars.')
+        // })
+        // it('Should return status 404 if no errors found for provided query', async () => {
+        //     const res = await request(server).delete(`/api/error/deleteByQuery`)
+        //     .send({ password: 'quackquack', }).set({'authorization': token});
+        //     expect(res.status).toBe(404);
+        //     expect(res.body.message).toEqual('No errors found')
+        // })
     })
 }
