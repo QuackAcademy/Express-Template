@@ -2,6 +2,7 @@ const request = require('supertest');
 const server = require('../server.js');
 
 let token = '';
+let testUserID = '';
 let lastErrorID = '';
 const createTestUser = async () => {
     await request(server).post('/api/auth/register').send({ email: 'quackquackerror@gmail.com', username: "QHtestuserError", password: "testO023123#@#adSD", fullName: 'testerson' });
@@ -83,6 +84,12 @@ module.exports = () => {
             expect(res.body.message).toEqual('Error(s) successfully deleted.')
         })
         it('Should be able to delete errors from userID', async () => {
+            const res = await request(server).delete(`/api/error/deleteByQuery`)
+            .send({ password: 'quackquack', userID: testUserID, }).set({'authorization': token});
+            expect(res.status).toBe(200);
+            expect(res.body.message).toEqual('Error(s) successfully deleted.')
+        })
+        it('Should be able to delete errors from date range', async () => {
             const date = new Date();
             const formattedDate = `${date.getMonth()+1 < 10 ? `0${date.getMonth()+1}` : date.getMonth()+1}/${date.getDate() < 10 ? `0${date.getDate()}`: date.getDate()}/${date.getFullYear()}`;
             const res = await request(server).delete(`/api/error/deleteByQuery`)
@@ -90,23 +97,19 @@ module.exports = () => {
             expect(res.status).toBe(200);
             expect(res.body.message).toEqual('Error(s) successfully deleted.')
         })
-        // it('Should be able to delete errors by date range', async () => {
-        //     const res = await request(server).delete(`/api/error/deleteByQuery`)
-        //     .send({ password: 'quackquack', }).set({'authorization': token});
-        //     expect(res.status).toBe(200);
-        //     expect(res.body.message).toEqual('Error(s) successfully deleted.')
-        // })
-        // it('Should be able to delete all errors', async () => {
-        //     const res = await request(server).delete(`/api/error/deleteByQuery`)
-        //     .send({ password: 'quackquack', }).set({'authorization': token});
-        //     expect(res.status).toBe(200);
-        //     expect(res.body.message).toEqual('Error(s) successfully deleted.')
-        // })
-        // it('Should return status 404 if no errors found for provided query', async () => {
-        //     const res = await request(server).delete(`/api/error/deleteByQuery`)
-        //     .send({ password: 'quackquack', }).set({'authorization': token});
-        //     expect(res.status).toBe(404);    
-        //     expect(res.body.message).toEqual('No errors found')
-        // })
+        it('Should be able to delete all errors', async () => {
+            const creatingAnError = await request(server).delete(`/api/error/deleteByQuery`)
+            .send({ password: 'bloop', deleteAll: true }).set({'authorization': token});
+            const res = await request(server).delete(`/api/error/deleteByQuery`)
+            .send({ password: 'quackquack', deleteAll: true }).set({'authorization': token});
+            expect(res.status).toBe(200);
+            expect(res.body.message).toEqual('Error(s) successfully deleted.')
+        })
+        it('Should return status 404 if no errors found for provided query', async () => {
+            const res = await request(server).delete(`/api/error/deleteByQuery`)
+            .send({ password: 'quackquack', deleteAll: true}).set({'authorization': token});
+            expect(res.status).toBe(404);    
+            expect(res.body.message).toEqual('No errors found')
+        })
     })
 }
