@@ -18,8 +18,6 @@ module.exports = () => {
         expect(res.body.message).toEqual('No token was provided');
     });
 
-    // case `/errors post /getByQuery 400-3`: status = 400; responseObj = { message: 'userID must be null or a number' }; break;
-    // case `/errors post /getByQuery 404`: status = 404; responseObj = { message: 'No errors found' }; break;
     // case `/errors delete /deleteByQuery 400`: status = 400; responseObj = { message: 'Protected endpoint, password is required' }; break;
     // case `/errors delete /deleteByQuery 400-2`: status = 400; responseObj = { message: 'userID must be null or a number' }; break;
     // case `/errors delete /deleteByQuery 400-3`: status = 400; responseObj = { message: 'deleteAll must be true if trying to delete everything. Otherwise, provide query vars.' }; break;
@@ -30,25 +28,31 @@ module.exports = () => {
             const res = await request(server).post(`/api/error/getByQuery`)
             .set({'authorization': token});
             expect(res.status).toBe(400);
-            expect(res.body.message).toContain('Protected endpoint, password is required')
+            expect(res.body.message).toEqual('Protected endpoint, password is required')
         })
         it('Should return status 400 if sortType has an invalid value', async () => {
             const res = await request(server).post(`/api/error/getByQuery`)
             .send({ password: 'quackquack', sortType: 'fish' }).set({'authorization': token});
             expect(res.status).toBe(400);
-            expect(res.body.message).toContain('sortType can only be set to null, asc, or desc')
+            expect(res.body.message).toEqual('sortType can only be set to null, asc, or desc')
         })
         it('Should return status 400 if userID has an invalid value', async () => {
             const res = await request(server).post(`/api/error/getByQuery`)
             .send({ password: 'quackquack', userID: 'fish' }).set({'authorization': token});
             expect(res.status).toBe(400);
-            expect(res.body.message).toContain('userID must be null or a number')
+            expect(res.body.message).toEqual('userID must be null or a number')
         })
         it('Should return status 403 if password incorrect', async () => {
             const res = await request(server).post(`/api/error/getByQuery`)
             .send({ password: 'wrong password' }).set({'authorization': token});
             expect(res.status).toBe(403);
-            expect(res.body.message).toContain('Invalid Password, access denied')
+            expect(res.body.message).toEqual('Invalid Password, access denied')
+        })
+        it('Should return status 200 and errors for valid requests', async () => {
+            const res = await request(server).post(`/api/error/getByQuery`)
+            .send({ password: 'quackquack', }).set({'authorization': token});
+            expect(res.status).toBe(200);
+            console.log(res.body);
         })
     })
 }
