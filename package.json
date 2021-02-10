@@ -29,9 +29,9 @@
     "express": "^4.17.1",
     "helmet": "^3.23.3",
     "jsonwebtoken": "^8.5.1",
-    "knex": "^0.21.17",
+    "knex": "^0.20.6",
     "knex-cleaner": "^1.3.0",
-    "pg": "^8.5.1",
+    "pg": "^7.18.2",
     "supertest": "^6.0.1"
   },
   "devDependencies": {
@@ -39,6 +39,6 @@
     "dotenv": "^8.2.0",
     "jest": "^26.4.0",
     "nodemon": "^2.0.4",
-    "sqlite3": "^5.0.1"
+    "sqlite3": "^4.2.0"
   }
 }
