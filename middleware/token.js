@@ -4,7 +4,7 @@ const secret = process.env.JWT_SECRET;
 
 async function generateToken(user){
     const payload = {
-        subject: user.id,
+        userID: user.id,
     };
 
     const options = {

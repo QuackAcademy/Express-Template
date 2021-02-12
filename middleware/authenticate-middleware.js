@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
         jwt.verify(token, secret, (err, decodedToken) => {
             if(err){ throw `${functionFile} 401`; }
             else{
-                req.user = {id: decodedToken.subject};
+                req.user = {id: decodedToken.userID};
                 next();
             }
         });
